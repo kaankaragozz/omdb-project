@@ -29,44 +29,44 @@
  * (it is a public/free key, no sensitive data at risk).
  */
 const CONFIG = {
-  API_KEY:      'b7003d40',
+  API_KEY: 'b7003d40',
   API_BASE_URL: 'https://www.omdbapi.com/',
   LS_KEY_QUERY: 'cinesearch_last_query',  // localStorage key for last search term
-  LS_KEY_DATA:  'cinesearch_last_data',   // localStorage key for cached movie data
+  LS_KEY_DATA: 'cinesearch_last_data',   // localStorage key for cached movie data
 };
 
 /* DOM element references — cached once for performance */
 const DOM = {
-  searchForm:       document.getElementById('search-form'),
-  searchInput:      document.getElementById('search-input'),
-  searchBtn:        document.getElementById('search-btn'),
+  searchForm: document.getElementById('search-form'),
+  searchInput: document.getElementById('search-input'),
+  searchBtn: document.getElementById('search-btn'),
 
-  filterType:       document.getElementById('filter-type'),
-  filterYear:       document.getElementById('filter-year'),
-  filterRating:     document.getElementById('filter-rating'),
-  clearFiltersBtn:  document.getElementById('clear-filters-btn'),
+  filterType: document.getElementById('filter-type'),
+  filterYear: document.getElementById('filter-year'),
+  filterRating: document.getElementById('filter-rating'),
+  clearFiltersBtn: document.getElementById('clear-filters-btn'),
 
-  statusBanner:     document.getElementById('status-banner'),
-  resultsSection:   document.getElementById('results-section'),
-  loadingSkeleton:  document.getElementById('loading-skeleton'),
-  emptyState:       document.getElementById('empty-state'),
+  statusBanner: document.getElementById('status-banner'),
+  resultsSection: document.getElementById('results-section'),
+  loadingSkeleton: document.getElementById('loading-skeleton'),
+  emptyState: document.getElementById('empty-state'),
 
   // Movie card fields
-  movieTitle:       document.getElementById('movie-title'),
-  movieYear:        document.getElementById('movie-year-val'),
-  movieRuntime:     document.getElementById('movie-runtime'),
-  movieLanguage:    document.getElementById('movie-language'),
-  moviePlot:        document.getElementById('movie-plot'),
-  movieGenre:       document.getElementById('movie-genre'),
-  movieDirector:    document.getElementById('movie-director'),
-  movieWriter:      document.getElementById('movie-writer'),
-  movieActors:      document.getElementById('movie-actors'),
-  movieAwards:      document.getElementById('movie-awards'),
-  movieBoxoffice:   document.getElementById('movie-boxoffice'),
-  moviePoster:      document.getElementById('movie-poster'),
-  movieTypeBadge:   document.getElementById('movie-type-badge'),
+  movieTitle: document.getElementById('movie-title'),
+  movieYear: document.getElementById('movie-year-val'),
+  movieRuntime: document.getElementById('movie-runtime'),
+  movieLanguage: document.getElementById('movie-language'),
+  moviePlot: document.getElementById('movie-plot'),
+  movieGenre: document.getElementById('movie-genre'),
+  movieDirector: document.getElementById('movie-director'),
+  movieWriter: document.getElementById('movie-writer'),
+  movieActors: document.getElementById('movie-actors'),
+  movieAwards: document.getElementById('movie-awards'),
+  movieBoxoffice: document.getElementById('movie-boxoffice'),
+  moviePoster: document.getElementById('movie-poster'),
+  movieTypeBadge: document.getElementById('movie-type-badge'),
   movieRatingBadge: document.getElementById('movie-rating-badge'),
-  ratingsRow:       document.getElementById('ratings-row'),
+  ratingsRow: document.getElementById('ratings-row'),
 };
 
 
@@ -92,9 +92,9 @@ const ApiService = {
 
     // Build the request URL
     const url = new URL(CONFIG.API_BASE_URL);
-    url.searchParams.set('t',      title.trim());
+    url.searchParams.set('t', title.trim());
     url.searchParams.set('apikey', CONFIG.API_KEY);
-    url.searchParams.set('plot',   'full'); // Request full plot
+    url.searchParams.set('plot', 'full'); // Request full plot
 
     // Fetch — no external libraries, pure Fetch API
     const response = await fetch(url.toString());
@@ -148,8 +148,8 @@ const StorageService = {
   getLastSearch() {
     try {
       const query = localStorage.getItem(CONFIG.LS_KEY_QUERY);
-      const raw   = localStorage.getItem(CONFIG.LS_KEY_DATA);
-      const data  = raw ? JSON.parse(raw) : null;
+      const raw = localStorage.getItem(CONFIG.LS_KEY_DATA);
+      const data = raw ? JSON.parse(raw) : null;
       return { query, data };
     } catch (err) {
       console.warn('[StorageService] Could not read from localStorage:', err.message);
@@ -184,22 +184,22 @@ const UI = {
     const safeText = (val) => (!val || val === 'N/A') ? '–' : val;
 
     // Badges
-    DOM.movieTypeBadge.textContent   = safeText(movie.Type);
+    DOM.movieTypeBadge.textContent = safeText(movie.Type);
     DOM.movieRatingBadge.textContent = safeText(movie.Rated);
 
     // Core fields
-    DOM.movieTitle.textContent    = safeText(movie.Title);
-    DOM.movieYear.textContent     = safeText(movie.Year);
-    DOM.movieRuntime.textContent  = safeText(movie.Runtime);
+    DOM.movieTitle.textContent = safeText(movie.Title);
+    DOM.movieYear.textContent = safeText(movie.Year);
+    DOM.movieRuntime.textContent = safeText(movie.Runtime);
     DOM.movieLanguage.textContent = safeText(movie.Language);
-    DOM.moviePlot.textContent     = safeText(movie.Plot);
+    DOM.moviePlot.textContent = safeText(movie.Plot);
 
     // Detail grid
-    DOM.movieGenre.textContent     = safeText(movie.Genre);
-    DOM.movieDirector.textContent  = safeText(movie.Director);
-    DOM.movieWriter.textContent    = safeText(movie.Writer);
-    DOM.movieActors.textContent    = safeText(movie.Actors);
-    DOM.movieAwards.textContent    = safeText(movie.Awards);
+    DOM.movieGenre.textContent = safeText(movie.Genre);
+    DOM.movieDirector.textContent = safeText(movie.Director);
+    DOM.movieWriter.textContent = safeText(movie.Writer);
+    DOM.movieActors.textContent = safeText(movie.Actors);
+    DOM.movieAwards.textContent = safeText(movie.Awards);
     DOM.movieBoxoffice.textContent = safeText(movie.BoxOffice);
 
     // Poster — use a fallback placeholder if OMDB returns 'N/A'
@@ -229,8 +229,8 @@ const UI = {
 
     const sourceIcons = {
       'Internet Movie Database': '⭐',
-      'Rotten Tomatoes':         '🍅',
-      'Metacritic':              '🎮',
+      'Rotten Tomatoes': '🍅',
+      'Metacritic': '🎮',
     };
 
     ratings.forEach(({ Source, Value }) => {
@@ -352,8 +352,8 @@ const Filters = {
 
   /** Reset all filter dropdowns to their default values */
   clearAll() {
-    DOM.filterType.value   = '';
-    DOM.filterYear.value   = '';
+    DOM.filterType.value = '';
+    DOM.filterYear.value = '';
     DOM.filterRating.value = '';
   },
 };
@@ -474,7 +474,7 @@ const App = {
       if (!DOM.statusBanner.classList.contains('hidden')) {
         DOM.statusBanner.classList.add('hidden');
         if (DOM.resultsSection.classList.contains('hidden') &&
-            DOM.loadingSkeleton.classList.contains('hidden')) {
+          DOM.loadingSkeleton.classList.contains('hidden')) {
           DOM.emptyState.classList.remove('hidden');
         }
       }
