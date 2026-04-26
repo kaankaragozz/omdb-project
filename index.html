@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CineSearch — A sleek, modern movie search engine powered by the OMDB API. Find any movie instantly with detailed info and beautiful posters." />
+  <title>CineSearch — Movie Discovery Engine</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="#" class="logo" aria-label="CineSearch Home">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">Cine<span class="logo-accent">Search</span></span>
+      </a>
+      <p class="tagline">Discover any movie, instantly.</p>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-content" role="main">
+    <div class="container">
+
+      <!-- Search Section -->
+      <section class="search-section" aria-label="Movie Search">
+        <form id="search-form" class="search-form" role="search" novalidate>
+          <div class="search-input-wrapper">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input
+              id="search-input"
+              type="search"
+              class="search-input"
+              placeholder="Search for a movie title…"
+              autocomplete="off"
+              spellcheck="false"
+              aria-label="Movie title search"
+              maxlength="100"
+            />
+            <button id="search-btn" type="submit" class="search-btn" aria-label="Search">
+              Search
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Filter Bar (UI Placeholder) -->
+      <section class="filter-section" aria-label="Search Filters">
+        <div class="filter-bar">
+          <span class="filter-label">Filters:</span>
+
+          <div class="filter-group">
+            <label for="filter-type" class="filter-tag-label">Type</label>
+            <select id="filter-type" class="filter-select" aria-label="Filter by type">
+              <option value="">All Types</option>
+              <option value="movie">Movie</option>
+              <option value="series">Series</option>
+              <option value="episode">Episode</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-year" class="filter-tag-label">Year</label>
+            <select id="filter-year" class="filter-select" aria-label="Filter by year">
+              <option value="">All Years</option>
+              <!-- Dynamically populated via JS -->
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filter-rating" class="filter-tag-label">Rating</label>
+            <select id="filter-rating" class="filter-select" aria-label="Filter by rating">
+              <option value="">Any Rating</option>
+              <option value="G">G</option>
+              <option value="PG">PG</option>
+              <option value="PG-13">PG-13</option>
+              <option value="R">R</option>
+            </select>
+          </div>
+
+          <button id="clear-filters-btn" class="filter-clear-btn" aria-label="Clear all filters">
+            Clear
+          </button>
+        </div>
+      </section>
+
+      <!-- Status / Error Banner -->
+      <div id="status-banner" class="status-banner hidden" role="alert" aria-live="polite"></div>
+
+      <!-- Results Section -->
+      <section id="results-section" class="results-section hidden" aria-label="Search Results">
+        <div id="movie-card" class="movie-card">
+
+          <!-- Poster Column -->
+          <div class="movie-poster-col">
+            <div class="poster-wrapper">
+              <img
+                id="movie-poster"
+                class="movie-poster"
+                src=""
+                alt="Movie poster"
+                loading="lazy"
+              />
+              <div class="poster-overlay" aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <!-- Info Column -->
+          <div class="movie-info-col">
+            <div class="movie-badge-row">
+              <span id="movie-type-badge" class="badge badge-type"></span>
+              <span id="movie-rating-badge" class="badge badge-rating"></span>
+            </div>
+
+            <h1 id="movie-title" class="movie-title"></h1>
+
+            <div class="movie-meta-row">
+              <span class="meta-item" id="movie-year">
+                <span class="meta-icon">📅</span>
+                <span id="movie-year-val"></span>
+              </span>
+              <span class="meta-divider" aria-hidden="true">·</span>
+              <span class="meta-item" id="movie-runtime-item">
+                <span class="meta-icon">⏱</span>
+                <span id="movie-runtime"></span>
+              </span>
+              <span class="meta-divider" aria-hidden="true">·</span>
+              <span class="meta-item">
+                <span class="meta-icon">🌐</span>
+                <span id="movie-language"></span>
+              </span>
+            </div>
+
+            <p id="movie-plot" class="movie-plot"></p>
+
+            <div class="movie-detail-grid">
+              <div class="detail-item">
+                <span class="detail-label">🎭 Genre</span>
+                <span id="movie-genre" class="detail-value"></span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">🎬 Director</span>
+                <span id="movie-director" class="detail-value"></span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">✍️ Writer</span>
+                <span id="movie-writer" class="detail-value"></span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">⭐ Actors</span>
+                <span id="movie-actors" class="detail-value"></span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">🏆 Awards</span>
+                <span id="movie-awards" class="detail-value"></span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">🏷️ Box Office</span>
+                <span id="movie-boxoffice" class="detail-value"></span>
+              </div>
+            </div>
+
+            <!-- Ratings Row -->
+            <div id="ratings-row" class="ratings-row"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Loading Skeleton -->
+      <div id="loading-skeleton" class="loading-skeleton hidden" aria-label="Loading movie details" aria-busy="true">
+        <div class="skeleton-poster"></div>
+        <div class="skeleton-info">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="empty-state" aria-label="Start searching">
+        <div class="empty-icon" aria-hidden="true">🎥</div>
+        <h2 class="empty-title">Your cinematic journey starts here.</h2>
+        <p class="empty-subtitle">Type a movie title above and press Search to discover details, posters, ratings, and more.</p>
+      </div>
+
+    </div><!-- /.container -->
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <p>Powered by <a href="https://www.omdbapi.com" target="_blank" rel="noopener noreferrer">OMDB API</a></p>
+      <p class="footer-note">Data provided for educational purposes. All rights reserved to their respective owners.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

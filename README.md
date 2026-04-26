@@ -1,86 +1,124 @@
-# OMDB Movie Search Project
+# 🎬 CineSearch — Movie Discovery Engine
 
-## How to Set Up Your Repository
-
-**WARNING**: This is a template project. Do not fork this repository.
-
-Please follow the visual steps below to create and set up the project repository on your own GitHub profile.
-
-1. Click the **"Use this template"** button at the top right of this page.
-
-<img width="1920" height="1080" alt="Use this template example" src="https://github.com/user-attachments/assets/137c0f6c-bc6c-4584-8752-02c067051438" />
-<br><br>
-
-2. Select **"Create a new repository"** to generate your own public repository for this task.
-
-<img width="1920" height="1080" alt="Create a new repository" src="https://github.com/user-attachments/assets/87b9032e-6e10-4679-88bb-c42a98894edf" />
-<br><br>
-
-3. Name your repository as **"omdb-project"** and click the **"Create repository"** button.
-
-<img width="1920" height="1080" alt="Create repository" src="https://github.com/user-attachments/assets/dd808d69-6ade-4903-8f77-831b643dbdff" />
-<br><br>
-
-Upload all of your solutions to `github.com/yourusername/omdb-project`.
+A sleek, dark-themed **Single Page Application (SPA)** built with vanilla HTML, CSS, and JavaScript that lets you search for any movie using the [OMDb API](https://www.omdbapi.com/) — no page reloads, no frameworks.
 
 ---
 
-## Overview
+## ✨ Features
 
-This project is designed to evaluate your coding skills in web development. You are required to build a simple web application that consumes the [OMDB API](http://www.omdbapi.com/).
-
-* The application must be a fully responsive **Single Page Application (SPA)** and should display movie details such as **title, year, genre, director, and poster**.
-* The application must be written using **HTML, CSS, and JavaScript**.
-* If your project meets all the requirements, you may extend it with additional functionalities.
-* After development, you must deploy the project using [GitHub Pages](https://pages.github.com). **Projects that are not deployed to GitHub Pages will not be evaluated and will receive 0 points.**
-
-You must **create your own repository using this template** and upload your work there. 
-Do **not** attempt to push changes directly to this repository or any of its original branches.
-
----
-
-## Functional Requirements
-
-1. **Movie Search Input**
-   - Users must be able to enter a movie name and trigger a search.
-   - A search box and button are sufficient, but adding well-composed UI elements (e.g., filters similar to sahibinden.com) will earn bonus points.
-
-2. **Display Movie Details**
-   - Show at least: Title, Year, Genre, Director, and Poster image.
-   - The design is up to you.
-
-3. **Error Handling**
-   - If the movie is not found or the API returns an error, display a clear message to the user.
-   - Unhandled errors will result in point deductions.
-
-4. **Multiple Searches**
-   - Users should be able to perform multiple searches without refreshing the page.
-   - If the page is refreshed, the last search view should be retained (e.g., using LocalStorage or URL parameters).
-
-5. **Backend Proxy (Optional)**
-   - If you implement a backend, it should handle API requests and return clean JSON to the frontend.
+- **Instant movie search** — type a title and get full details with a single click
+- **Rich movie card** — displays title, year, runtime, language, plot, genre, director, writer, actors, awards, box office revenue, and poster
+- **Third-party ratings** — IMDb, Rotten Tomatoes, and Metacritic scores rendered as chips
+- **Filter bar** — UI filters for Type, Year, and Rating (wired for future multi-result search via the `?s=` endpoint)
+- **Session persistence** — last successful search is saved in `localStorage` and restored on page refresh without any extra network call
+- **Loading skeleton** — animated placeholder while the API request is in-flight
+- **Graceful error handling** — distinct messages for "not found", network failures, and missing API key
+- **Fallback poster** — SVG placeholder with movie initials when OMDb returns no image
+- **Responsive design** — works across desktop, tablet, and mobile
+- **Accessible markup** — semantic HTML5, ARIA roles, and live regions
 
 ---
 
-## Non-Functional Requirements
+## 🛠️ Tech Stack
 
-1. **Performance**
-   - API calls should be efficient. Avoid unnecessary repeated requests.
-
-2. **Usability**
-   - The interface should be simple, intuitive, and user-friendly.
-   - The design is up to you.
-
-3. **Portability**
-   - The application should work across modern browsers and be responsive for different screen sizes.
-
-4. **Maintainability**
-   - Code should be modular, well-documented, and easy to extend.
+| Layer      | Technology                       |
+|------------|----------------------------------|
+| Markup     | HTML5 (semantic)                 |
+| Styling    | Vanilla CSS3 (custom properties, flexbox, grid, animations) |
+| Logic      | Vanilla JavaScript (ES2020, `'use strict'`) |
+| Fonts      | [Inter](https://fonts.google.com/specimen/Inter) via Google Fonts |
+| API        | [OMDb API](https://www.omdbapi.com/) |
+| Deployment | GitHub Pages                     |
 
 ---
 
-## Deliverables & Submission
+## 📂 Project Structure
 
-Once you have completed the project, ensure you have the following ready:
-- A **public GitHub repository** containing your project code (created via the template).
-- A **hosted version** of the project deployed on GitHub Pages.
+```
+omdb-project/
+├── index.html   # App shell & all UI markup
+├── style.css    # Design system, components, animations
+└── app.js       # All JS logic (API, storage, rendering, state)
+```
+
+### `app.js` Module Breakdown
+
+| Module          | Responsibility                                      |
+|-----------------|-----------------------------------------------------|
+| `CONFIG`        | API key, base URL, and localStorage key constants   |
+| `DOM`           | Cached element references (queried once on load)    |
+| `ApiService`    | Fetches movie data from OMDb (`fetch` API)          |
+| `StorageService`| Reads/writes last search to `localStorage`         |
+| `UI`            | Renders movie card and rating chips to the DOM      |
+| `AppState`      | Controls visible UI state (loading / results / error / empty) |
+| `Filters`       | Populates dynamic year dropdown; clears filters     |
+| `App`           | Orchestrates the search flow; wires all event listeners |
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/kaankaragozz/omdb-project.git
+cd omdb-project
+```
+
+### 2. Get a free OMDb API key
+
+Register at [https://www.omdbapi.com/apikey.aspx](https://www.omdbapi.com/apikey.aspx) — the free tier allows 1,000 requests/day.
+
+### 3. Set your API key
+
+Open `app.js` and update the `CONFIG` object at the top of the file:
+
+```js
+const CONFIG = {
+  API_KEY: 'your_api_key_here',  // ← replace this
+  ...
+};
+```
+
+### 4. Open locally
+
+Because the project is pure HTML/CSS/JS, you can open `index.html` directly in any modern browser — or use a local server:
+
+```bash
+npx serve .
+```
+
+---
+
+## 🌐 Deployment (GitHub Pages)
+
+1. Push your repository to GitHub.
+2. Go to **Settings → Pages**.
+3. Under **Source**, select the `main` branch and `/ (root)`.
+4. Click **Save** — your app will be live at `https://<username>.github.io/omdb-project/`.
+
+> **Note:** The OMDb API key is embedded directly in `app.js`. Since the free tier key has no sensitive billing data, this is acceptable for GitHub Pages deployment.
+
+---
+
+## 📋 Requirements Fulfilled
+
+| Requirement                                   | Status |
+|-----------------------------------------------|--------|
+| Movie search by title (no page reload)        | ✅     |
+| Display title, year, genre, director, poster  | ✅     |
+| Error handling for API failures & not found   | ✅     |
+| Multiple searches without page refresh        | ✅     |
+| Last search restored after page refresh       | ✅ (localStorage) |
+| Responsive Single Page Application            | ✅     |
+| Deployed via GitHub Pages                     | ✅     |
+| Bonus: filter bar UI                          | ✅     |
+| Bonus: third-party ratings chips              | ✅     |
+| Bonus: loading skeleton animation             | ✅     |
+| Bonus: SVG fallback poster                    | ✅     |
+
+---
+
+## 📄 License
+
+This project was built as an academic assignment. All movie data is provided by the [OMDb API](https://www.omdbapi.com/). Rights to individual movie content remain with their respective owners.
